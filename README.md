@@ -1,7 +1,8 @@
-## WalletWise - Gestor de Carteira
+## AvetaSoftware (WalletWise) - Gestor de Carteira
 
 API em Spring Boot para gestão de carteira de investimentos, permitindo cadastrar aportes em **Renda Variável** (Ações/FIIs) e **Renda Fixa** (CDB/CDI), calcular o **saldo consolidado** e consultar o **extrato de operações**.
-
+ - Um projeto motivado pelo meu forte interesse na união da área financeira com a área de tecnologia e para ser uma refatoração completa do projeto desenvolvido em meu TCC durante o ensino médio na ETEC.
+ - A título de curiosidade segue o instagram do projeto antigo :) -> https://www.instagram.com/avetasoftware/
 ### Stack técnica
 
 - **Java**: 21
