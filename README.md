@@ -54,28 +54,28 @@ API em Spring Boot para gestão de carteira de investimentos, permitindo cadastr
   - Relacionamento: `N-1` com `Portfolio`
   - Regra: loga toda operação de compra de ações/FIIs e aportes em renda fixa.
 
-### Requisitos atendidos
+### Requisitos
 
-- **RF01 – Cadastro de Ativos**
+- **Cadastro de Ativos**
   - `POST /assets`
     - Request: `AssetRequestDto` com `portfolioId`, `ticker`, `quantity`, `price`.
     - Validação: `@NotBlank` para `ticker`, `@Positive` para `quantity` e `price`.
     - Ação: cria um `Asset` associado a uma `Portfolio` e registra uma `Transaction` do tipo `BUY`.
 
-- **RF02 – Saldo da Carteira**
+- **Saldo da Carteira**
   - `GET /portfolios/{id}/summary`
     - Retorna `PortfolioSummaryDto` com:
       - `totalVariableIncome` = soma de `quantity * averagePrice` de todos os `Asset`.
       - `totalFixedIncome` = soma de `principal` de todos os `FixedIncome`.
       - `totalInvested` = soma dos dois.
 
-- **RF03 – Simulação de Rendimento (Renda Fixa)**
+- **Simulação de Rendimento (Renda Fixa)**
   - Fórmula: \\(M = P (1 + i)^n\\)
   - Implementada em `FixedIncomeService.simulateCompoundInterest`.
   - Endpoint: `GET /fixed-incomes/{id}/simulation?months=X`
     - Retorna `FixedIncomeSimulationDto` com `principal`, `monthlyRate`, `months`, `projectedAmount`.
 
-- **RF04 – Extrato**
+- **Extrato**
   - `GET /portfolios/{portfolioId}/transactions`
     - Response: lista de `TransactionResponseDto`.
     - Filtros opcionais: `from` e `to` (datas no padrão ISO `yyyy-MM-dd'T'HH:mm:ss`).
@@ -118,14 +118,6 @@ API em Spring Boot para gestão de carteira de investimentos, permitindo cadastr
 - Acesse a documentação interativa em:
   - `http://localhost:8080/swagger-ui/index.html`
 
-### Integração com frontend React (CORS)
-
-- O projeto expõe CORS via um `CorsFilter` configurado em `OpenApiConfig`:
-  - Origem permitida: `http://localhost:3000` (frontend React padrão).
-  - Métodos liberados: `GET`, `POST`, `PUT`, `DELETE`, `OPTIONS`.
-  - Credenciais habilitadas (`allowCredentials = true`), permitindo uso de cookies/autenticação futura.
-- Em um app React (Vite/Create React App), basta consumir a API usando a base:
-
 ```ts
 const api = axios.create({
   baseURL: "http://localhost:8080",
@@ -167,6 +159,8 @@ await api.get(`/portfolios/${portfolioId}/summary`);
    ```bash
    mvn spring-boot:run
    ```
+    - Ou rodar na sua IDE com o run
+    - Atenção à porta (verifique se o projeto está sendo inicializado no ipv4 ou ipv6)
 
 3. Acessar a API:
 
@@ -184,11 +178,4 @@ await api.get(`/portfolios/${portfolioId}/summary`);
 - A simulação de juros compostos considera:
   - Taxa mensal em decimal (`monthlyRate`).
   - Número de meses informado no endpoint.
-
-### Próximos passos sugeridos
-
-- Adicionar autenticação (ex: JWT) e multi-usuário real.
-- Suportar múltiplas carteiras por usuário.
-- Adicionar preços de mercado e cálculo de rentabilidade real.
-- Incluir testes unitários e de integração (ex: Testcontainers para PostgreSQL).
 
